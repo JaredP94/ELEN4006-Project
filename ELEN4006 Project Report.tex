@@ -268,7 +268,7 @@ The signal processing consists of the ADC as well as the microprocessor, a PIC24
 
 This PIC has 18 I/O pins, which can all be used as 12~bit ADCs with a $100~\mathrm{kHz}$ sample rate \cite{PIC}. It also has $1~\mathrm{MB}$ of RAM as well as a Serial Peripheral Interface (SPI) digital communication module.
 
-The $0.1~\%$ error frequency ($-60~\mathrm{dB}$ point) of the AA filter's response is $9.66~\mathrm{kHz}$, as shown in \figref{fig:bode}. Based on Nyquists theorem, this means that in order to get an anti-aliasing error of $0.1~\%$, the signal must be sampled at a minimum of $9.66~\mathrm{kHz}$. Since this frequency is well below the $100~\mathrm{kHz}$ sample rate of the PIC, there is no need for a separate ADC component in the system.  
+To ensure the aliased signals and noise below the resolution of the converter, the aliased signals must be attenuated by $6.02(N + 1)~+~1.76~dB$ to ensure they are below half the system's least significant bit (LSB), where $N$ represents the number of bits of resolution of the converter \cite{alias-error}. This results in a required attenuation of $80.02~dB$ at half the sampling frequency based on Nyquist's theorem. From \cref{fig:bode} it can be seen that this occurs at $30.557~kHz$. This is well below half of the $100~\mathrm{kHz}$ sample rate of the PIC, thus it can be deduced that negligible aliasing error is incurred and there is no need for a separate ADC component in the system.
 
 In addition to ADC functionality, the microprocessor will also be responsible for the storing of angular displacement values in RAM as well as writing them to the data presentation system as discussed in \secref{datapres}. In order to present the pilot with an angle rather than a voltage, the microprocessor will have a look-up table relating the measured voltages to the appropriate angle. Finally, the microprocessor is responsible for implementing the smart functionality discussed in \secref{smart}.
 
@@ -309,9 +309,9 @@ The static characteristics of the system are given in \tabref{tab:static}.
 		Input offset current & $\mathrm{0.01~pA}$\\
 		Operating temp range & $\mathrm{-40~\rightarrow~85\degree C}$\\ \hline
 		System bandwidth & $238~\mathrm{Hz}$ \\
-		Step response rise time & $1.5~\mathrm{ms}$ \\
-		Step response overshoot & $2.26~\%$ \\
-		Step response settling time & $3.4~\mathrm{ms}$ \\
+		Step response rise time & $170~\mathrm{\mu s}$ \\
+		Step response overshoot & $4.27~\%$ \\
+		Step response settling time & $398~\mathrm{\mu s}$ \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -323,7 +323,7 @@ The information below describes the elements which contribute to the maximum err
 \begin{itemize}
 	\item Accumulative Sensor error: 2.565~$\%$
 	\item Power Supply maximum ripple : $1~\%~V_{p-p}$
-	\item Aliasing error : 0.1~$\%$
+	\item Aliasing error : $\sim$0~$\%$
 	\item Wheatstone bridge non-linearity : 
 	\item Resistor tolerance : $5\cdot0.01~\% = 0.05~\%$
 	\item Capacitor tolerance : $2\cdot1~\% = 2~\%$
@@ -338,11 +338,11 @@ The total maximum accumulated error of the system is calculated to be 5.74~$\%$.
 
 \section{DYNAMIC RESPONSE}
 
-The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $238~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a $336~\mathrm{Hz}$ bandwidth, which also impacts the system. The sensor's electrical side has a $528~\mathrm{kHz}$ bandwidth, which is three orders of magnitude larger than the  bandwidth system, and has almost no effect on the system's performance. The time domain characterisitcs are found in \tabref{tab:static}.
+The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $238~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a $336~\mathrm{Hz}$ bandwidth, which also impacts the system. The sensor's electrical side has a $528~\mathrm{kHz}$ bandwidth, which is three orders of magnitude larger than the  bandwidth system, and has almost no effect on the system's performance. The time domain characteristics are found in \tabref{tab:static}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.5\textwidth]{bode}
+	\includegraphics[width=0.5\textwidth]{bode_updated}
 	\caption{Measurement system Bode plot}
 	\label{fig:bode}
 \end{figure}
