@@ -132,8 +132,8 @@ The system takes an input into the system in the form of angular displacement. U
 	\draw
 	node at (0,1) [begin] (begin) {}
 	node at (0, -1) [dec] (gamerun) {}
-	node at (1.5,-1.75) [] (pt2) {[\textsc{Motion}]}
-	node at (-2,-0.75) [] (pt3) {[\textsc{!Motion}]}
+	node at (1.5,-1.75) [] (pt2) {[\textsc{Engine On}]}
+	node at (-2,-0.75) [] (pt3) {[\textsc{Engine Off}]}
 	node at (0, -2.5) [block] (sens1) {\textsc{Potentiometer 1 Input}}
 	node at (0, -4) [block] (sens2) {\textsc{Potentiometer 2 Input}}
 	node at (0, -5.75) [block] (comp) {\textsc{Measurements \\ Comparison}}
@@ -181,31 +181,31 @@ Circuit diagrams for both the Wheatstone bridge and anti-aliasing filter can be 
 
 \subsection{Sensor}
 
-The sensor is responsible for taking the angular displacement and converting it into an electrical signal which can be outputted to the rest of the system. The rotary potentiometer, as shown in \figref{pot}, contains four primary components: the resistive track, the contact/wiper, the actuator/shaft and the terminations.
+The sensor is responsible for taking the angular displacement and converting it into an electrical signal which can be outputted to the rest of the system. The rotary potentiometer, as shown in \cref{fig:pot}, contains four primary components: the resistive track, the contact/wiper, the actuator/shaft and the terminations.
 
 \begin{figure}[h!]
 	\centering
-	\label{pot}
 	\includegraphics[width=0.35\textwidth]{Pot2.png}
 	\caption{Physical design of a rotary potentiometer}
+	\label{fig:pot}
 \end{figure}
 
-The sensor is connected to the wheel base of the car via the actuator. The actuator is a steel shaft with density $\mathrm{\rho_{st}} =  7~800~\mathrm{kg/m^3}$, shear modulus $\mathrm{G_{st}} = 7.9~\mathrm{GPa}$, and radius $1.5~\mathrm{mm} $. This shaft is connected directly to the contact which moves along the resistive material providing the drive interface for the sensor. As the angle of elevation of the wheel base varies, a resultant resistance is produced according to the position of the contact along the resistive track. The contact will use a copper multiple-fingered equidistant wiper along the material. This will minimize current crowding along the resistive material reducing the amount of distortion incurred\cite{handbook}.
+The sensor is connected to the wheel base of the car via the actuator. The actuator is a steel shaft with density $\mathrm{\rho_{st}} =  7~850~\mathrm{kg/m^3}$, shear modulus $\mathrm{G_{st}} = 79.3~\mathrm{GPa}$, and radius $2.6~\mathrm{mm} $. This shaft is connected directly to the contact which moves along the resistive material providing the drive interface for the sensor. As the angle of elevation of the wheel base varies, a resultant resistance is produced according to the position of the contact along the resistive track. The contact will use a copper multiple-fingered equidistant wiper along the material. This will minimize current crowding along the resistive material reducing the amount of distortion incurred\cite{handbook}.
 
-The resistive track is made uo of a conductive plastic material with a carbon black inert filler. The conductive plastic provides a much more accurate linearity in comparison to other resistive elements such as wirewound or cermet potentiometers due to the method of its manufacturing. It also provides a low contact resistance variation and smoother surface for the contact to move across \cite{handbook}. The total length of the resistance band must account for the total range of angular displacement allowed for by the control system. Angular displacement before a critical roll over risk is detected occurs typically between $-15 \degree \mathrm{~to~} 15 \degree $. This means that the potentiometer resistance range will occur across a change of $ 30 \degree$ respectively with a buffer of $1 \degree $ to allow for any error or over-extension of the wheel base. 
+The resistive track is made up of a conductive plastic material with a carbon black inert filler. The conductive plastic provides a much more accurate linearity in comparison to other resistive elements such as wirewound or cermet potentiometers due to the method of its manufacturing. It also provides a low contact resistance variation and smoother surface for the contact to move across \cite{handbook}. The total length of the resistance band must account for the total range of angular displacement allowed for by the control system. Angular displacement before a critical roll over risk is detected occurs typically between $-15 \degree \mathrm{~to~} 15 \degree $. This means that the potentiometer resistance range will occur across a change of $ 30 \degree$ respectively with a buffer of $1 \degree $ to allow for any error or over-extension of the wheel base. 
 
 The terminations will be connected to the rest of the circuit using a solder connection. This provides the advantage of increased reliability and reduces the amount of inductance incurred at the terminations. In addition to this, the solder method provides redundant connection to the resistive track increasing it's ability to handle severe vibrations and therefore increasing it's durability.
  
 \subsubsection{Mechanical Model}
 
-A mass-spring-damper model of the shaft and potentiometer has been used to find a transfer function for the conversion of torque into aileron angle. This model has a second-order transfer function that considers the fiction, spring, damping and inertia involved in the movement of the steel shaft, as shown in \eqnref{mech_model}.
+A mass-spring-damper model of the shaft and potentiometer has been used to find a transfer function for the conversion of torque into roll angle. This model has a second-order transfer function that considers the fiction, spring, damping and inertia involved in the movement of the steel shaft, as shown in \eqnref{mech_model}.
 
 \begin{equation}
 \mathrm{G(s) = \frac{\theta(s)}{T_{in}(s)} = \frac{1 + \alpha}{\textit{I}s^2 + \textit{C}s + \textit{k}} }
 \label{mech_model}
 \end{equation}
 
-$\mathrm{G(s)}$ is ratio of output angle to input torque $\mathrm{\frac{\theta_2(s)}{T_{in}(s)}}$. $\alpha$ is the constant relating input angle to input torque; this is dependent on the specific geometry of the aileron which varies for different aircraft. $k$ is the spring constant derived from the elasticity of steel $k\mathrm{~=~\frac{GJ}{\textit{l}}}$, where $\mathrm{G,~J,~\textit{l}}$ are the shear modulus, torsional constant $(\frac{mr^2}{2})$, and the length of the shaft respectively. $\mathrm{C}$ is the damping due to the journal bearings - the bushing holding the shaft, and can be calculated using the viscosity of the lubricant $\mu$ and the formula $\mathrm{C~=~\frac{2\pi\mu R^3 \textit{l}}{d}}$ \cite{vibrations}. The lubricant used is Uniflor 8511 which has a $\mu = 11.63$ \cite{uniflor}. The moment of Inertia of a cylindrical shaft can be calculated using $I~=~\frac{mr^2}{2}$. This results in a normalized transfer function as shown in \eqnref{tf_mech}, with a limiting maximum mechanical bandwidth of $270~\mathrm{Hz}$, as shown in \figref{fig:bode}.
+$\mathrm{G(s)}$ is ratio of output angle to input torque $\mathrm{\frac{\theta_2(s)}{T_{in}(s)}}$. $\alpha$ is the constant relating input angle to input torque; this is dependent on the specific geometry of the roll which varies for different aircraft. $k$ is the spring constant derived from the elasticity of steel $k\mathrm{~=~\frac{GJ}{\textit{l}}}$, where $\mathrm{G,~J,~\textit{l}}$ are the shear modulus, torsional constant $(\frac{mr^2}{2})$, and the length of the shaft respectively. $\mathrm{C}$ is the damping due to the journal bearings - the bushing holding the shaft, and can be calculated using the viscosity of the lubricant $\mu$ and the formula $\mathrm{C~=~\frac{2\pi\mu R^3 \textit{l}}{d}}$ \cite{vibrations}. The lubricant used is Uniflor 8511 which has a $\mu = 11.63$ \cite{uniflor}. The moment of Inertia of a cylindrical shaft can be calculated using $I~=~\frac{mr^2}{2}$. This results in a normalized transfer function as shown in \eqnref{tf_mech}, with a limiting maximum mechanical bandwidth of $270~\mathrm{Hz}$, as shown in \figref{fig:bode}.
 
 \begin{equation}
 \mathrm{G_{mech}(s) = \frac{1}{5.605\times10^{-8} s^2 + 6.683\times10^{-4}s + 1}}
@@ -235,7 +235,7 @@ The Wheatstone bridge is used to convert the electrical resistance from the pote
 
 The instrumentation amplifier is responsible for converting the voltage difference output of the Wheatstone bridge into a single voltage value.
 
-The amplifier that will be used is the Texas Instruments (TI) INA188. This is a versatile 3 Op-amp precision amplifier with an adjustable gain of between 1 and 1000. The op amp also provides a low input voltage range of approximately $4~V$ and a high input impedance ($100~\mathrm{G\Omega}$ \cite{ina188}). For the designed system, the gain will be set to 1 with the amplifier acting as a buffer in order to reduce loading errors incurred by the previous two elements. The bandwidth at this gain is $600~\mathrm{kHZ}$ \cite{ina188}.
+The amplifier that will be used is the Texas Instruments (TI) INA188. This is a versatile 3 Op-amp precision amplifier with an adjustable gain of between 1 and 1000. The op amp also provides a low input voltage range of approximately $4~V$ and a high input impedance ($100~\mathrm{G\Omega}$ \cite{ina188}). For the designed system, the gain will be set to 1 with the amplifier acting as a buffer in order to reduce loading errors incurred by the previous two elements. The bandwidth at this gain is $600~\mathrm{kHz}$ \cite{ina188}.
 
 \subsubsection{Anti-aliasing Filter}
 
@@ -244,7 +244,7 @@ The anti-aliasing (AA) filter is used to reduce the aliasing errors produced whe
 The filter is designed by using the following equations:
 
 \begin{equation}
-	Q =  \frac{\sqrt{R_1 R_2 C_1 C_2}}{C_2 (R_1 + R_2)} = \frac{1}{\sqrt{2}}
+	Q =  \frac{\sqrt{R_1 R_2 C_1 C_2}}{C_2 (R_1 + R_2)} = 0.7071
 \end{equation}
 
 \begin{equation}
@@ -289,8 +289,8 @@ The static characteristics of the system are given in \tabref{tab:static}.
 		\hline
 		\textbf{Static Parameter} & \textbf{Magnitude} \\ \hline
 		\multicolumn{2}{|c|}{Sensor} \\ \hline
-		Potentiometer input range & $-21\degree~\rightarrow~29\degree$\\
-		Potentiometer output range & $\mathrm{1~k\Omega \rightarrow 13~k\Omega}$\\
+		Potentiometer input range & $-15\degree~\rightarrow~15\degree$\\
+		Potentiometer output range & $\mathrm{1~k\Omega \rightarrow 12~k\Omega}$\\
 		Potentiometer offset & $\mathrm{1~k\Omega}$\\
 		Conductive plastic temp coefficient & $\mathrm{200~ppm/\degree C}$ \\
 		Bridge output range & $\mathrm{0~V \rightarrow 5~V}$\\
@@ -338,13 +338,20 @@ The total maximum accumulated error of the system is calculated to be 5.74~$\%$.
 
 \section{DYNAMIC RESPONSE}
 
-The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $238~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a $336~\mathrm{Hz}$ bandwidth, which also impacts the system. The sensor's electrical side has a $528~\mathrm{kHZ}$ bandwidth, which is three orders of magnitude larger than the  bandwidth system, and has almost no effect on the system's performance. The time domain characterisitcs are found in \tabref{tab:static}.
+The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $238~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a $336~\mathrm{Hz}$ bandwidth, which also impacts the system. The sensor's electrical side has a $528~\mathrm{kHz}$ bandwidth, which is three orders of magnitude larger than the  bandwidth system, and has almost no effect on the system's performance. The time domain characterisitcs are found in \tabref{tab:static}.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{bode}
 	\caption{Measurement system Bode plot}
 	\label{fig:bode}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{filterStep}
+	\caption{Measurement system step response}
+	\label{fig:step}
 \end{figure}
 
 \section{Cost}
