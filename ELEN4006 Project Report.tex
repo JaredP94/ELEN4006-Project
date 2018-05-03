@@ -198,23 +198,31 @@ The terminations will be connected to the rest of the circuit using a solder con
  
 \subsubsection{Mechanical Model}
 
-A mass-spring-damper model of the shaft and potentiometer has been used to find a transfer function for the conversion of torque into roll angle. This model has a second-order transfer function that considers the fiction, spring, damping and inertia involved in the movement of the steel shaft, as shown in \eqnref{mech_model}.
+A mass-spring-damper model of the potentiometer has been used to find a ratio between the torque and the roll angle output. The conversion between the two states is modeled using a second-order transfer function that considers the friction, spring, damping and inertia experienced by the steel shaft, as shown in \eqnref{mech_model}.
 
 \begin{equation}
 \mathrm{G(s) = \frac{\theta(s)}{T_{in}(s)} = \frac{1 + \alpha}{\textit{I}s^2 + \textit{C}s + \textit{k}} }
 \label{mech_model}
 \end{equation}
+where
+\begin{flalign}
+k~=~\frac{GJ}{\textit{l}} \\
+C~=~\frac{2\pi\mu R^3 \textit{l}}{d} \\
+I~=~\frac{mr^2}{2} 
+\end{flalign}
 
-$\mathrm{G(s)}$ is ratio of output angle to input torque $\mathrm{\frac{\theta_2(s)}{T_{in}(s)}}$. $\alpha$ is the constant relating input angle to input torque; this is dependent on the specific geometry of the roll which varies for different aircraft. $k$ is the spring constant derived from the elasticity of steel $k\mathrm{~=~\frac{GJ}{\textit{l}}}$, where $\mathrm{G,~J,~\textit{l}}$ are the shear modulus, torsional constant $(\frac{mr^2}{2})$, and the length of the shaft respectively. $\mathrm{C}$ is the damping due to the journal bearings - the bushing holding the shaft, and can be calculated using the viscosity of the lubricant $\mu$ and the formula $\mathrm{C~=~\frac{2\pi\mu R^3 \textit{l}}{d}}$ \cite{vibrations}. The lubricant used is Uniflor 8511 which has a $\mu = 11.63$ \cite{uniflor}. The moment of Inertia of a cylindrical shaft can be calculated using $I~=~\frac{mr^2}{2}$. This results in a normalized transfer function as shown in \eqnref{tf_mech}, with a limiting maximum mechanical bandwidth of $270~\mathrm{Hz}$, as shown in \figref{fig:bode}.
+$\mathrm{G(s)}$ represents the ratio of output angle  $\mathrm{\theta_2(s)}$ to input torque $\mathrm{T_{in}(s)}$. $k$ represents the steel's elasticity spring constant with $\mathrm{G,~J,~\textit{l}}$ representing the shear modulus, torsional constant, and the length of the shaft respectively. $\mathrm{C}$ is the damping due to the bearings with the value $\mu$ representing the viscosity of the lubricant supplied for the bearings. $I$ describes the moment of inertia experienced by the shaft. Using these values, the normalized transfer function is calculated as follows.
 
 \begin{equation}
 \mathrm{G_{mech}(s) = \frac{1}{5.605\times10^{-8} s^2 + 6.683\times10^{-4}s + 1}}
 \label{tf_mech}
 \end{equation}
 
+By analyzing the Bode plot in \cref{fig:bode}, a limiting mechanical bandwidth of $270~\mathrm{Hz}$ is observed by the circuit. 
+
 \subsubsection{Electrical Model}
 
-The electrical model of the potentiometer is derived from a simple RLC model of a resistor, with lead inductance and a parallel parasitic capacitance, resulting in a low-pass filter. Using a lead inductance from the termination contacts of $\mathrm{L_L~=~10~nH}$ \cite{leadind} and a capacitance of $\mathrm{C_P~=~1~pF}$, the transfer function shown in \eqnref{tf_elec} is derived.
+A simple RLC model of a resistor is used to create a transfer function for the electrical component of the potentiometer. A resulting low-pass filter is derived using the lead inductance ($\mathrm{10~nH}$) generated from the terminations as well as the parallel parasitic capacitance ($\mathrm{1~pF}$) contained within the circuit in order to produce the transfer function shown in \eqnref{tf_elec}.
 
 \begin{flalign} \label{tf_elec}
 \mathrm{G_{elec}(s)} = \mathrm{\frac{1}{1\times10^{-20}s^2 + 3\times10^{-7}s +1} }
@@ -239,7 +247,7 @@ The amplifier that will be used is the Texas Instruments (TI) INA188. This is a 
 
 \subsubsection{Anti-aliasing Filter}
 
-The anti-aliasing (AA) filter is used to reduce the aliasing errors produced when sampling the signal. \figref{fig:aafilter} in \textit{Appendix A} shows the designed filter. The filter is placed before the Analogue-to-Digital Converter (ADC) in order to eliminate the noise incurred at high-frequency components of the signal. this is achieved by implementing a second-order low-pass active Butterworth filter with a Salen-Key topology. The Salen-Key topology is chosen due to it's non-inverting gain and it's reduced number of components in comparison to that of a multiple feedback topology. The Butterworth filter is characterized as an active filter providing a smooth pass band and steep roll off as well as a low output impedance.
+The anti-aliasing (AA) filter is used to reduce the aliasing errors produced when sampling the signal. \figref{fig:aafilter} in \textit{Appendix A} shows the designed filter. The filter is placed before the Analogue-to-Digital Converter (ADC) in order to eliminate the noise incurred at high-frequency components of the signal and reduce loading effects between the AA filter and the instrumentation amplifier. This is achieved by implementing a second-order low-pass active Butterworth filter with a Salen-Key topology. The Salen-Key topology is chosen due to it's non-inverting gain and it's reduced number of components in comparison to that of a multiple feedback topology. The Butterworth filter is characterized as an active filter providing a smooth pass band and steep roll off as well as a low output impedance.
 
 The filter is designed by using the following equations:
 
@@ -248,19 +256,19 @@ The filter is designed by using the following equations:
 \end{equation}
 
 \begin{equation}
-	f_c = \frac{1}{2 \pi \sqrt{R_1 R_2 C_1 C_2}} = 298~\mathrm{Hz}
+	f_c = \frac{1}{2 \pi \sqrt{R_1 R_2 C_1 C_2}} = 336~\mathrm{Hz}
 \end{equation}
 
-where $R_1 = R_2 = 10~\mathrm{k\Omega}$. By solving for Q and $f_c$ simultaneously for $C_1$ and $C_2$ then selecting the closest commercially available values. $298~\mathrm{Hz}$ is the frequency at which the sensor gain has decayed by an additional $5.74~\%$ after the -3~dB point, as shown in \figref{fig:bode}. $5.74~\%$ is the error percentage for the rest of the system, as shown in \tabref{tab:error}. The transfer function is shown in \eqnref{eqn:aafilter}.
+where $R_1 = R_2 = 10~\mathrm{k\Omega}$. The chosen value of $Q$ represents the quality factor at the point where the filter is critically damped. $f_c$ takes the form of a second-order low pass filter at the -3~dB point frequency.
+
+By substituting in both values, we are able to simultaneously solve for $C_1$ and $C_2$. The closest commercially available values can then be selected for each capacitor. The derived transfer function is calculated in \eqnref{eqn:aafilter}.
 
 \begin{equation}
 \mathrm{G_{AA}(s) = \frac{1}{2.643 \times 10^{-7} s^2 + 1.028 \times 10^{-3} s + 1} }
 \label{eqn:aafilter}
 \end{equation}
 
-The operational amplifier that will be used will be the TI LMC6022. This was chosen for its high input impedance of $1~\mathrm{T\Omega}$ \cite{lmc6022} in order to reduce loading effects between the AA filter and the instrumentation amplifier. The resistors and capacitors used will be $0.1~\%$ and $1~\%$ tolerance respectively. 
-
-\figref{fig:aafilter} in \textit{Appendix A} shows the circuit diagram for the sensing and signal conditioning elements.
+The TI LMC6022 operational amplifier will be used as it caters best for the system requirements. The resistors and capacitors used will be $0.1~\%$ and $1~\%$ tolerance respectively in order to reduce the total error experienced by the system.
 
 \subsection{Signal Processing Element}
 
@@ -270,7 +278,7 @@ This PIC has 18 I/O pins, which can all be used as 12~bit ADCs with a $100~\math
 
 To ensure the aliased signals and noise below the resolution of the converter, the aliased signals must be attenuated by $6.02(N + 1)~+~1.76~dB$ to ensure they are below half the system's least significant bit (LSB), where $N$ represents the number of bits of resolution of the converter \cite{alias-error}. This results in a required attenuation of $80.02~dB$ at half the sampling frequency based on Nyquist's theorem. From \cref{fig:bode} it can be seen that this occurs at $30.557~kHz$. This is well below half of the $100~\mathrm{kHz}$ sample rate of the PIC, thus it can be deduced that negligible aliasing error is incurred and there is no need for a separate ADC component in the system.
 
-In addition to ADC functionality, the microprocessor will also be responsible for the storing of angular displacement values in RAM as well as writing them to the data presentation system as discussed in \secref{datapres}. In order to present the pilot with an angle rather than a voltage, the microprocessor will have a look-up table relating the measured voltages to the appropriate angle. Finally, the microprocessor is responsible for implementing the smart functionality discussed in \secref{smart}.
+In addition to ADC functionality, the microprocessor will also be responsible for the storing of angular displacement values in RAM as well as writing them to the data presentation system as discussed in \secref{datapres}. In order to present the pilot with an angle rather than a voltage, the microprocessor will have a look-up table relating the measured voltages to the appropriate angle. Finally, the microprocessor is responsible for implementing the smart functionality.
 
 The microprocessor will implement a number of smart features. Firstly, it will allow for self calibration by ``learning" the maximum and minimum aileron angles on different aircraft. Secondly, the device will be aware of when it was last serviced and will alert the relevant parties when it is due for maintenance. Finally, self diagnosing can be implemented by detecting if one of the two potentiometers on each aileron is not moving while the other is. The relevant party will then be notified and the sensor can be replaced as soon as possible. The dual potentiometer also adds a level of redundancy to the system.  
 
@@ -356,7 +364,7 @@ The bode plot for the system is shown in \figref{fig:bode}. The system transfer 
 
 \section{Cost}
 
-The estimated cost breakdown for the system is shown in \tabref{tab:cost}. The cost of the potentiometer is based on the cost of the raw materials and does not include assembly. This pricing does not take into account the PCB cost, the manufacturing and labour costs or the sensor housing costs. Wherever possible, components prices for bulk purchases were used as it was assumed that a number of the devices would be made.
+The estimated cost of the raw materials used to construct the measurement system are shown in \tabref{tab:cost}. Additional expenses incurred due to the manufacturing process and labour costs were not included in the cost breakdown.
 
 \begin{table}[h!]
 	\caption{Component costs for the measurement system} \label{tab:cost}
@@ -381,6 +389,8 @@ The estimated cost breakdown for the system is shown in \tabref{tab:cost}. The c
 \end{table}
 
 \section{CONCLUSION}
+
+A  potentiometric-based smart transducer measurement system is designed for the purpose of measuring an electric vehicles roll angle in order to avoid a high roll over risk. A sensor consisting of an angular potentiometer is used to convert the angular displacement measured at the wheel base into a corresponding resistance and finally an electrical current. The current is filtered using an anti-aliasing filter and sampled before being read by an external 12-bit ADC.The information produced by the ADC is then sent to a microcontroller where the information is stored before being transferred to a computer which communicates with the active safety control system already in place in the vehicle. The maximum output error of the measurement system is approximately \%. The static and dynamic characteristics of the system have been critically analyzed and detailed in this report. The total cost of the measurement system is R679.95.
 
 \clearpage
 \onecolumn
