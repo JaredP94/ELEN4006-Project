@@ -55,9 +55,9 @@
 %% Yuk, yuk, but then again
 \AtBeginDocument{\parindent0.0em} %!PN
 \AtBeginDocument{\itemindent-1.0em} %!PN
-\AtBeginDocument{\leftmargini2.0em} %!PN
+\AtBeginDocument{\leftmargini1.5em} %!PN
 
-\AtBeginDocument{\parskip1.0em} %!PN
+\AtBeginDocument{\parskip0.8em} %!PN
 
 
 %% define new needed boolean variables
@@ -81,12 +81,12 @@
 %%%%% \input IEEE\@ptsize.sty\relax  %%%% FONT DEFINITION BELOW (NO FILE READ)
 
 %% change sizes and margins
-\topmargin      -10.4mm
+\topmargin      -13mm
 \marginparwidth   0.0mm
 \marginparsep     0.0mm
 \oddsidemargin   -8mm
 \evensidemargin  -8mm
-\textheight     250.0mm
+\textheight     270.0mm
 \textwidth      170.0mm
 \columnsep        6.0mm
 \parindent        0.0mm
@@ -301,8 +301,8 @@
 \newcounter{subsubsection}[subsection]
 \newcounter{paragraph}[subsubsection]
 
-\def\thesection{\arabic{section}.}
-\def\thesubsection{\thesection\arabic{subsection}}
+\def\thesection{\arabic{section}}
+\def\thesubsection{\thesection.\arabic{subsection}}
 \def\thesubsubsection{\thesubsection.\arabic{subsubsection}}
 \def\thesubsubsectiondis{\Alph{subsection}.\arabic{subsubsection}}
 \def\theparagraph{\thesubsubsection.\alph{paragraph}}
@@ -522,20 +522,18 @@ page \thepage \space undefined}}%
 % author info is immediately below authors
 \def\thanks#1{\gdef\@thanks{#1}}
 
-\def\@maketitle{{\parskip 0pt \newpage \null
+\def\@maketitle{{\parskip -1pt \newpage \null
 %   \advance \rightskip by 15mm
 %   \advance \leftskip  by 15mm
    {\fontfamily{ptm}\fontseries{b}\fontsize{12pt}{\f@baselineskip}\selectfont \@title \par}
    \vskip 12pt {\lineskip .5em
    {\fontfamily{ptm}\fontseries{b}\fontsize{10pt}{\f@baselineskip}\selectfont \@author}\par}
    \noindent{\itshape\small\vskip 12pt {\sl \@thanks}\par}
-   \noindent{\small\vskip 27pt {\fontfamily{ptm}\fontseries{b}\fontsize{9pt}{\f@baselineskip}\selectfont Abstract:} \@abstract\par}
-   \noindent{\small\vskip 9pt {\fontfamily{ptm}\fontseries{b}\fontsize{9pt}{\f@baselineskip}\selectfont Key words:} \@keywords\par}
    \vskip 27pt}}
 
 \def\maketitle{\par
    \begingroup
-   \def\@makefnmark{\hbox to 0pt{$^{\@thefnmark}$\hss}}
+   \def\@makefnmark{\hbox to -1pt{$^{\@thefnmark}$\hss}}
    \if@twocolumn
       \twocolumn[\@maketitle]
    \else \newpage \global\@topnum\z@ \@maketitle \fi%
@@ -595,7 +593,7 @@ page \thepage \space undefined}}%
    {section}%                         % name
    {1}%                               % level
    {\z@}%                             % indent
-   {0.5ex}%                  % beforeskip
+   {0.3ex}%                  % beforeskip
    {0.2ex}%                % afterskip
    {\centering\kenf}}% style
 
