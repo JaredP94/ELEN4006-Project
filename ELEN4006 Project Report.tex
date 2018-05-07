@@ -65,16 +65,16 @@ The objective of this project is to investigate the design a potentiometric smar
 
 The proposed solution utilities a high-bandwidth measurement system in order to accurately measure fast changing parameters of the system. These include instantaneous torque changes, volatile turbulence, and sudden impact. Thus, the measurement system will require a much larger bandwidth than the minimum $100~\mathrm{Hz}$ specified for the design to accurately poll the required system components.
 
-This report documents the design and analysis of the proposed measurement system. The static and dynamic system characteristics will be described along with costing and error analysis.Finally, future improvements will also be considered.
+This report documents the design and analysis of the proposed measurement system. The static and dynamic system characteristics will be described along with costing and error analysis. Finally, future improvements will also be considered.
 
 \section{PROJECT DETAILS}
 
 \subsection{Success Criteria}
 
-The success criteria of the measurement system will be determined by the level of fulfilment of the following specifications:
+The success criteria of the measurement system will be determined by the level of fulfillment of the following specifications:
 
 \begin{itemize}
-	\item A complete, critically-analysed design of a smart transducer measurement system has been designed which meets a satisfactory engineering level.
+	\item A complete, critically-analyzed design of a smart transducer measurement system has been exhibited which meets a satisfactory engineering level.
 	\item The system contains all elements set out by Bentley's generalized model of a measurement system.
 	\item The error analysis of the system complies with industry standards.
 	\item The design is both energy and cost efficient.
@@ -194,7 +194,7 @@ The sensor is connected to the wheel base of the car via the actuator. The actua
 
 The resistive track is made up of a conductive plastic material with a carbon black inert filler. The conductive plastic provides a much more accurate linearity in comparison to other resistive elements such as wire wound or cermet potentiometers due to its manufacturing process. It also provides a low contact resistance variation and smoother surface for the contact to move across \cite{handbook}. The total length of the resistance band must account for the total range of angular displacement allowed for by the control system. The angular displacement range in which non-critical roll-over risk occurs is between $-15 \degree \mathrm{~to~} 15 \degree $. This translates to a potentiometer resistance range of $ 30 \degree$ with a buffer of $1 \degree $ to allow for any error or over-extension of the wheel base. 
 
-The terminations will be connected to the rest of the circuit using a solder connection. This provides the advantage of increased reliability and reduces the amount of inductance incurred at the terminations. Furthermore, the solder method provides redundant connection to the resistive track, increasing it's ability to handle severe vibrations and thus increasing its durability.
+The terminations will be connected to the rest of the circuit using a solder connection. This provides the advantage of increased reliability and reduces the amount of inductance incurred at the terminations. Furthermore, the solder method provides redundant connection to the resistive track, increasing it's ability to handle severe vibrations and thus increasing its durability\cite{TIinstr}.
  
 \subsubsection{Mechanical Model}
 
@@ -245,7 +245,7 @@ The chosen amplifier is the Texas Instruments (TI) INA188. This is a versatile 3
 
 \subsubsection{Anti-aliasing Filter}
 
-The Anti-Aliasing (AA) filter is used to reduce the aliasing errors produced when sampling the signal. \figref{fig:aafilter} in \textit{Appendix A} shows the designed filter. The filter is placed before the Analogue-to-Digital Converter (ADC) in order to eliminate the noise incurred at high-frequency components of the signal and reduce loading effects between the AA filter and the instrumentation amplifier. This is achieved by implementing a second-order low-pass active Butterworth filter with a Salen-Key topology. The Salen-Key topology is chosen due to it's non-inverting gain and it's reduced number of components in comparison to that of a multiple feedback topology. The Butterworth filter is characterized as an active filter providing a smooth passband and steep roll-off as well as a low output impedance.
+The Anti-Aliasing (AA) filter is used to reduce the aliasing errors produced when sampling the signal. \figref{fig:aafilter} in \textit{Appendix A} shows the designed filter. The filter is placed before the Analogue-to-Digital Converter (ADC) in order to eliminate the noise incurred at high-frequency components of the signal and reduce loading effects between the AA filter and the instrumentation amplifier\cite{aafilter}. This is achieved by implementing a second-order low-pass active Butterworth filter with a Salen-Key topology. The Salen-Key topology is chosen due to it's non-inverting gain and it's reduced number of components in comparison to that of a multiple feedback topology\cite{aafilter}. The Butterworth filter is characterized as an active filter providing a smooth passband and steep roll-off as well as a low output impedance.
 
 The filter is designed by using the following equations:
 \begin{equation}
@@ -263,7 +263,7 @@ By substituting in both values, $C_1$ and $C_2$ can be solved simultaneously. Th
 \label{eqn:aafilter}
 \end{equation}
 
-The TI LMC6022 operational amplifier has been selected due to its satisfaction of system requirements. The resistors and capacitors used will be $0.1~\%$ and $1~\%$ tolerance respectively in order to reduce the total error experienced by the system.
+The TI LMC6022 operational amplifier has been selected due to its satisfaction of system requirements\cite{lmc6022}. The resistors and capacitors used will be $0.1~\%$ and $1~\%$ tolerance respectively in order to reduce the total error experienced by the system.
 
 \subsection{Signal Processing Element}
 
@@ -391,7 +391,7 @@ The estimated cost of the raw materials used to construct the measurement system
 
 \section{CONCLUSION}
 
-A  potentiometric smart transducer measurement system has been designed for the purpose of measuring an electric vehicles roll angle in order to avoid a high roll-over risk. A sensor consisting of an angular potentiometer is used to convert the angular displacement measured at the wheel base into a corresponding resistance and finally an electrical current. The current is filtered using an anti-aliasing filter and sampled before being read in by an external 12-bit ADC. The information produced by the ADC is then sent to an MCU where the information is stored before being transmitted to a computer which communicates with the active safety control system already in place within the vehicle. The maximum output error of the measurement system is approximately \%. The static and dynamic characteristics of the system have been critically analysed and discussed. The total cost of the measurement system amounts to R679.95.
+A potentiometric smart transducer measurement system has been designed for the purpose of measuring an electric vehicles roll angle in order to avoid a high roll-over risk. A sensor consisting of an angular potentiometer is used to convert the angular displacement measured at the wheel base into a corresponding resistance and finally an electrical current. The current is filtered using an anti-aliasing filter and sampled before being read in by an external 12-bit ADC. The information produced by the ADC is then sent to an MCU where the information is stored before being transmitted to a computer which communicates with the active safety control system already in place within the vehicle. The maximum output error of the measurement system is approximately \%. The static and dynamic characteristics of the system have been critically analysed and discussed. The total cost of the measurement system amounts to R679.95.
 
 \bibliography{references}{}
 \bibliographystyle{ieeetr}
