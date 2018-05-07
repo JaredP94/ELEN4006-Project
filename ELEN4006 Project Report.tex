@@ -187,7 +187,7 @@ The sensor is responsible for taking the angular displacement and converting it 
 	\label{fig:pot}
 \end{figure}
 
-The sensor is connected to the wheel base of the car via the actuator. The actuator is a steel shaft with density $\mathrm{\rho_{st}} =  7~850~\mathrm{kg/m^3}$, shear modulus $\mathrm{G_{st}} = 79.3~\mathrm{GPa}$, and radius $2.6~\mathrm{mm} $. This shaft is connected directly to the contact which moves along the resistive material providing the drive interface for the sensor. As the angle of elevation of the wheel base varies, a resultant resistance is produced according to the position of the contact along the resistive track. The contact will use a copper multiple-fingered equidistant wiper along the material. This will minimize current crowding along the resistive material reducing the amount of distortion incurred\cite{handbook}.
+The sensor is connected to the wheel base of the car via the actuator. The actuator is a steel shaft with density $\mathrm{\rho_{st}} =  7~850~\mathrm{kg/m^3}$, shear modulus $\mathrm{G_{st}} = 79.3~\mathrm{GPa}$, and a radius of $2.6~\mathrm{mm} $. This shaft is connected directly to the contact which moves along the resistive material providing the drive interface for the sensor. As the angle of elevation of the wheel base varies, a resultant resistance is produced according to the position of the contact along the resistive track. The contact will use a copper multiple-fingered equidistant wiper along the material. This will provide continuity along the resistive material reducing the amount of distortion incurred\cite{handbook}.
 
 The resistive track is made up of a conductive plastic material with a carbon black inert filler. The conductive plastic provides a much more accurate linearity in comparison to other resistive elements such as wire wound or cermet potentiometers due to its manufacturing process. It also provides a low contact resistance variation and smoother surface for the contact to move across \cite{handbook}. The total length of the resistance band must account for the total range of angular displacement allowed for by the control system. The angular displacement range in which non-critical roll-over risk occurs is between $-15 \degree \mathrm{~to~} 15 \degree $. This translates to a potentiometer resistance range of $ 30 \degree$ with a buffer of $1 \degree $ to allow for any error or over-extension of the wheel base. 
 
@@ -229,7 +229,7 @@ This process makes use of the resistance output from the sensor and converts it 
 
 \subsubsection{Wheatstone Bridge}\label{wheat_bridge}
 
-The Wheatstone bridge is used to convert the electrical resistance from the potentiometer into a voltage signal. This is achieved by balancing the two legs of the electric circuit containing one unknown resistance. By inputting one variable resistance within the bridge, the voltage range $\mathrm{0V}$ to $\mathrm{5V}$ can be linearised according to the resistance values between $\mathrm{R_{min}}$ to $\mathrm{R_{max}}$.The resistance values are calculated by balancing the bridge at $\mathrm{R_{min}}$ and linearising the ratios of $\mathrm{\frac{V_{Th}}{V_s}}$ and $\mathrm{\frac{R(\theta)}{R_{min}}}$. This is achieved by producing a ratio between $R_3$ and $R_2$ of 100. The non linearity of the bridge design is calculated as follows:
+The Wheatstone bridge is used to convert the electrical resistance from the potentiometer into a voltage signal. This is achieved by balancing the two legs of the electric circuit containing one unknown resistance. By inputting one variable resistance within the bridge, the voltage range $\mathrm{0V}$ to $\mathrm{5V}$ can be linearised according to the resistance values between $\mathrm{R_{min}}$ to $\mathrm{R_{max}}$. The resistance values are calculated by balancing the bridge at $\mathrm{R_{min}}$ and linearizing the ratios of $\mathrm{\frac{V_{Th}}{V_s}}$ and $\mathrm{\frac{R(\theta)}{R_{min}}}$. This is achieved by producing a ratio between $R_3$ and $R_2$ of 100. The non linearity of the bridge design is calculated as follows:
 \begin{equation}
 	\hat{N} = \frac{V_{Th} - V_{Ideal}}{V_{max}} \cdot 100\% = 2.33\%
 \end{equation}
@@ -238,7 +238,7 @@ The Wheatstone bridge is used to convert the electrical resistance from the pote
 
 The instrumentation amplifier is responsible for converting the voltage difference output of the Wheatstone bridge into a single voltage value.
 
-The chosen amplifier is the Texas Instruments (TI) INA188. This is a versatile 3 Op-amp precision amplifier with an adjustable gain ranging between 1 and 1000. The op amp provides a low input voltage range of approximately $4~V$ and a high input impedance ($100~\mathrm{G\Omega}$ \cite{ina188}). For the designed system, the gain will be set to 1 with the amplifier acting as a buffer in order to reduce loading errors incurred by the previous two elements. The bandwidth at this gain is $600~\mathrm{kHz}$ \cite{ina188}.
+The chosen amplifier is the Texas Instruments (TI) INA188. This is a versatile 3 Op-amp precision amplifier with an adjustable gain ranging between 1 and 1000. The op amp provides a low input voltage range of approximately $4~V$ and a high input impedance of $100~\mathrm{G\Omega}$ \cite{ina188}. For the designed system, the gain will be set to 1 with the amplifier acting as a buffer in order to reduce loading errors incurred by the previous two elements. The bandwidth at this gain is $600~\mathrm{kHz}$ \cite{ina188}.
 
 \subsubsection{Anti-aliasing Filter}
 
@@ -264,9 +264,9 @@ The TI LMC6022 operational amplifier has been selected due to its satisfaction o
 
 \subsection{Signal Processing Element}
 
-The signal processing consists of the ADC as well as the Micro-controller (MCU), a PIC24F08KM101. The ADC is responsible for converting the analogue signal produced by the AA filter into a digital signal which can be read by the MCU.
+The signal processing consists of the ADC as well as  a PIC24F08KM101 Micro-controller (MCU). The ADC is responsible for converting the analogue signal produced by the AA filter into a digital signal which can be read by the MCU.
 
-This MCU has 18 I/O pins,of which 16 be used as 12~bit ADCs with a $100~\mathrm{kHz}$ sample rate \cite{PIC}. It has $1~\mathrm{MB}$ of RAM as well as a Serial Peripheral Interface (SPI) digital communication module.
+This MCU has 18 I/O pins, of which 16 can be used as 12~bit ADCs with a $100~\mathrm{kHz}$ sample rate \cite{PIC}. It has $1~\mathrm{MB}$ of RAM as well as a Serial Peripheral Interface (SPI) digital communication module.
 
 To ensure the aliased signals and noise below the resolution of the converter, the aliased signals must be attenuated by $74~dB$, which is calculated from \cref{eqn:snr}, to ensure they are below half the system's least significant bit (LSB) \cite{alias-error}. This should be achieved at half the sampling frequency based on Nyquist's theorem. From \cref{fig:bode} it can be seen that this occurs at $21.645~kHz$. This is well below half of the $100~\mathrm{kHz}$ sample rate of the MCU, thus it can be deduced that negligible aliasing error is incurred and there is no need for a separate ADC component in the system.
 \begin{equation}\label{eqn:snr}
@@ -277,9 +277,10 @@ where
 \begin{flalign*}
 N &= \text{bit resolution of converter}
 \end{flalign*}
-In addition to ADC functionality, the MCU will also be responsible for the storing of angular displacement values in RAM as well as writing them to the data presentation system as discussed in \secref{datapres}. In order to present the pilot with an angle rather than a voltage, the microprocessor will have a look-up table relating the measured voltages to the appropriate angle. Finally, the microprocessor is responsible for implementing the smart functionality.
 
-The MCU will implement a number of smart features. Firstly, it will allow for self calibration by ``learning" the minimum and maximum roll angles on different electric vehicles. Secondly, the device will be aware of when it was last serviced and will alert the relevant parties when it is due for maintenance. Finally, self diagnosing can be implemented by detecting if one of the two potentiometers on each end of the wheelbase is not moving while the other is. The relevant party will then be notified and the sensor can be replaced as soon as possible. The dual potentiometer also adds a level of redundancy to the system.
+In addition to ADC functionality, the MCU will also be responsible for the storing of angular displacement values in RAM as well as presenting them as an input to the vehicle control system. In order to present the system with an angle rather than a voltage, the microprocessor will make use of a look-up table relating the measured voltages to the appropriate angle. Finally, the microprocessor is responsible for implementing the smart functionality.
+
+The MCU will implement a number of smart features. Firstly, it will allow for self calibration according to the minimum and maximum roll angles on different electric vehicles. Secondly, the device will be aware of when it was last serviced and will alert the relevant parties when it is due for maintenance. Finally, self diagnosing can be implemented by detecting if one of the two potentiometers on each end of the wheelbase is not moving while the other is. The relevant party will then be notified and the sensor can be replaced as soon as possible. The dual potentiometer also adds a level of redundancy to the system.
 
 \subsection{Power Supply} 
 
@@ -388,7 +389,7 @@ The estimated cost of the raw materials used to construct the measurement system
 
 \section{CONCLUSION}
 
-A potentiometric smart transducer measurement system has been designed for the purpose of measuring an electric vehicles roll angle in order to avoid a high roll-over risk. A sensor consisting of an angular potentiometer is used to convert the angular displacement measured at the wheel base into a corresponding resistance and finally an electrical current. The current is filtered using an anti-aliasing filter and sampled before being read in by an external 12-bit ADC. The information produced by the ADC is then sent to an MCU where the information is stored before being transmitted to a computer which communicates with the active safety control system already in place within the vehicle. The maximum output error of the measurement system is approximately \%. The static and dynamic characteristics of the system have been critically analysed and discussed. The total cost of the measurement system amounts to R679.95.
+The design of a smart transducer for measuring the angular displacement of an electric vehicles wheel base. The transducer implements an angular potentiometer with several signal conditioning and processing techniques such that the angle can be read in by the control system. The final estimated cost for the device is R679.95. An error analysis has been completed on the system with a resultant error of $5.74~\%$. The system static and dynamic characteristics have also been analysed with a system bandwidth of $270~\mathrm{Hz}$ being decided upon. Finally, future recommendations have been given for further work.
 
 \bibliography{references}{}
 \bibliographystyle{ieeetr}
