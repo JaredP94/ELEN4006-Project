@@ -43,7 +43,7 @@
 	
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\abstract{}
+\abstract{A smart transducer has been designed to measure the angular displacement of the roll angle of an electric vehicle. This provides important information to the control system of the vehicle, allowing for anti-roll measures to be initiated. The transducer uses an angular potentiometer along with signal conditioning and processing techniques for accurate measurement. The system has an operating bandwidth of $270~\mathrm{Hz}$, an estimated total error of $5.74~\%$ and cost of R~$679.95$. Future recommendations have been given such that further work may improve the design.}
 	
 \keywords{Roll Angle, Potentiometer, Anti-aliasing Filter, Wheatstone Bridge, Analog-to-Digital Conversion}
 	
@@ -268,7 +268,7 @@ The signal processing consists of the ADC as well as  a PIC24F08KM101 Micro-cont
 
 This MCU has 18 I/O pins, of which 16 can be used as 12~bit ADCs with a $100~\mathrm{kHz}$ sample rate \cite{PIC}. It has $1~\mathrm{MB}$ of RAM as well as a Serial Peripheral Interface (SPI) digital communication module.
 
-To ensure the aliased signals and noise below the resolution of the converter, the aliased signals must be attenuated by $74~dB$, which is calculated from \cref{eqn:snr}, to ensure they are below half the system's least significant bit (LSB) \cite{alias-error}. This should be achieved at half the sampling frequency based on Nyquist's theorem. From \cref{fig:bode} it can be seen that this occurs at $21.645~kHz$. This is well below half of the $100~\mathrm{kHz}$ sample rate of the MCU, thus it can be deduced that negligible aliasing error is incurred and there is no need for a separate ADC component in the system.
+To ensure the aliased signals and noise below the resolution of the converter, the aliased signals must be attenuated by $74~dB$, which is calculated from \cref{eqn:snr}, to ensure they are below half the system's least significant bit (LSB) \cite{alias-error}. This should be achieved at half the sampling frequency based on Nyquist's theorem. From \cref{fig:bode} it can be seen that this occurs at $21.645~\mathrm{kHz}$. This is well below half of the $100~\mathrm{kHz}$ sample rate of the MCU, thus it can be deduced that negligible aliasing error is incurred and there is no need for a separate ADC component in the system.
 \begin{equation}\label{eqn:snr}
 SNR = 6.02N + 1.76~dB
 \end{equation}
@@ -315,7 +315,7 @@ The static characteristics of the system are given in \tabref{tab:static}.
 		Input bias current & $\mathrm{0.04~pA}$\\
 		Input offset current & $\mathrm{0.01~pA}$\\
 		Operating temp range & $\mathrm{-40~\rightarrow~85~\degree C}$\\ \hline
-		System bandwidth & $238~\mathrm{Hz}$ \\
+		System bandwidth & $270~\mathrm{Hz}$ \\
 		Step response rise time & $170~\mathrm{\mu s}$ \\
 		Step response overshoot & $4.27~\%$ \\
 		Step response settling time & $398~\mathrm{\mu s}$ \\
@@ -328,12 +328,12 @@ The static characteristics of the system are given in \tabref{tab:static}.
 The information below describes the elements which contribute to the maximum error incurred within the system.
 
 \begin{itemize}
-	\item Accumulative Sensor error: 2.565~$\%$
+	\item Accumulative Sensor error: 1.35~$\%$
 	\item Power Supply maximum ripple : $1~\%~V_{p-p}$
 	\item Aliasing error : $\sim$~0~$\%$
-	\item Wheatstone bridge non-linearity : 
+	\item Wheatstone bridge non-linearity : 2.33~$\%$
 	\item Resistor tolerance : $5\cdot0.01~\% = 0.05~\%$
-	\item Capacitor tolerance : $2\cdot1~\% = 2~\%$
+	\item Capacitor tolerance : $2\cdot0.5~\% = 1~\%$
 	\item Quantization error : 0.00024~$\%$
 \end{itemize}
 
@@ -345,7 +345,7 @@ The total maximum accumulated error of the system is calculated to be 5.74~$\%$.
 
 \section{DYNAMIC RESPONSE}
 
-The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $238~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a bandwidth of $336~\mathrm{Hz}$, which also impacts the system. The sensor's electrical side has a bandwidth of $528~\mathrm{kHz}$, which is three orders of magnitude larger than the system bandwidth, and has almost no effect on the system's performance. The time domain characteristics are found in \tabref{tab:static}.
+The bode plot for the system is shown in \figref{fig:bode}. The system transfer function is $\mathrm{6^{th}}$ order and is comprised of the transfer functions of the AA filter, the electrical side of the sensor and the mechanical side of the sensor. The bandwidth of the system is $270~\mathrm{Hz}$. This is clearly a result of the sensor's mechanical side which has a bandwidth of $270~\mathrm{Hz}$, which is the smallest of the components in the system. The AA filter has a bandwidth of $336~\mathrm{Hz}$, which also impacts the system. The sensor's electrical side has a bandwidth of $528~\mathrm{kHz}$, which is three orders of magnitude larger than the system bandwidth, and has almost no effect on the system's performance. The time domain characteristics are found in \tabref{tab:static}.
 
 \begin{figure}[h!]
 	\centering
